@@ -3,7 +3,7 @@
  const morgan=require('morgan')
  const connectDB= require('./config/db')
  const colors=require('colors')
-
+ const errorHandler  = require('./middleware/error');
 
 dotenv.config({ path: './config/config.env'})
 
@@ -17,6 +17,10 @@ const  bootcamps=require('./routes/bootcamps.js')
 const app =express();
 
 app.use(express.json())
+//Mount Routers
+app.use('/api/v1/bootcamps',bootcamps)
+
+app.use(errorHandler);
 
 //Dev Logging middleware
 if(process.env.NODE_ENV ==='development')
@@ -24,8 +28,7 @@ if(process.env.NODE_ENV ==='development')
     app.use(morgan('dev'))
 ]
 
- //Mount Routers
-app.use('/api/v1/bootcamps',bootcamps)
+ 
 
  const PORT =process.env.PORT || 7000;
 
